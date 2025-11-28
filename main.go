@@ -13,8 +13,8 @@ const (
 	Version = "0.1.0"
 )
 
-//go:embed sample.json
-var sampleJson string
+//go:embed sample.yaml
+var sample string
 
 func main() {
 	var err error
@@ -22,21 +22,21 @@ func main() {
 	// Define flags and usage
 	flag.Usage = func() {
 		fmt.Fprint(os.Stderr,
-			CliName, " outputs a macro for Aveva Administration to set up project database using options in JSON format.\n",
+			CliName, " outputs a macro for Aveva Administration to set up project database using options in YAML format.\n",
 			"\n",
-			"Usage: ", CliName, " [-o file] {-s | json_file}\n",
-			"Example: ", CliName, " sample.json > export.mac\n",
+			"Usage: ", CliName, " [-o file] {-s | yaml_file}\n",
+			"Example: ", CliName, " sample.yaml > export.mac\n",
 			"\n",
 			"Options:\n",
 		)
 		flag.PrintDefaults()
 		fmt.Fprint(os.Stderr,
 			"\n",
-			"When json_file is -, read standard input instead of a file.\n",
+			"When yaml_file is -, read standard input instead of a file.\n",
 		)
 	}
 	vflg := flag.Bool("v", false, "Display version")
-	sflg := flag.Bool("s", false, "Output a sample JSON")
+	sflg := flag.Bool("s", false, "Output a sample YAML")
 	oflg := flag.String("o", "", "Output file")
 	flag.Parse()
 
@@ -53,9 +53,9 @@ func main() {
 		chkErr(err)
 	}
 
-	// Output sample JSON
+	// Output sample YAML
 	if *sflg {
-		fmt.Fprintln(out, sampleJson)
+		fmt.Fprintln(out, sample)
 		return
 	}
 

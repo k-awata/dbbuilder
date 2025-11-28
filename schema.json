@@ -4,12 +4,7 @@
     "$defs": {
         "Project": {
             "properties": {
-                "$schema": {
-                    "type": "string",
-                    "description": "The schema to verify this document against.",
-                    "format": "uri"
-                },
-                "logFile": {
+                "log_file": {
                     "type": "string"
                 },
                 "users": {
@@ -18,7 +13,7 @@
                     },
                     "type": "array"
                 },
-                "authUsers": {
+                "auth_users": {
                     "items": {
                         "$ref": "#/$defs/AuthUser"
                     },
@@ -30,37 +25,37 @@
                     },
                     "type": "array"
                 },
-                "masterDbs": {
+                "master_dbs": {
                     "items": {
                         "$ref": "#/$defs/MasterDB"
                     },
                     "type": "array"
                 },
-                "copyDbs": {
+                "foreigns": {
                     "items": {
-                        "$ref": "#/$defs/CopyDB"
+                        "$ref": "#/$defs/Foreign"
                     },
                     "type": "array"
                 },
-                "includeDbs": {
-                    "items": {
-                        "$ref": "#/$defs/ForeignDB"
-                    },
-                    "type": "array"
-                },
-                "extractDbs": {
+                "extract_dbs": {
                     "items": {
                         "$ref": "#/$defs/ExtractDB"
                     },
                     "type": "array"
                 },
-                "dynamicDbSets": {
+                "working_extract_dbs": {
+                    "items": {
+                        "$ref": "#/$defs/WorkingExtractDB"
+                    },
+                    "type": "array"
+                },
+                "dynamic_dbsets": {
                     "items": {
                         "$ref": "#/$defs/DynamicDBSet"
                     },
                     "type": "array"
                 },
-                "dbSets": {
+                "dbsets": {
                     "items": {
                         "$ref": "#/$defs/StaticDBSet"
                     },
@@ -72,13 +67,13 @@
                     },
                     "type": "array"
                 },
-                "ttFonts": {
+                "ttfonts": {
                     "items": {
                         "$ref": "#/$defs/TTFont"
                     },
                     "type": "array"
                 },
-                "additionalCmds": {
+                "post_commands": {
                     "items": {
                         "type": "string"
                     },
@@ -93,7 +88,7 @@
                 "name": {
                     "type": "string"
                 },
-                "defaultUser": {
+                "default_user": {
                     "type": "string"
                 },
                 "users": {
@@ -112,15 +107,15 @@
         "CopyDB": {
             "properties": {
                 "from": {
-                    "$ref": "#/$defs/ForeignDB"
+                    "type": "string"
                 },
                 "to": {
                     "type": "string"
                 },
-                "areaNumber": {
+                "area_number": {
                     "type": "integer"
                 },
-                "fileNumber": {
+                "file_number": {
                     "type": "integer"
                 }
             },
@@ -141,7 +136,7 @@
                 "criteria": {
                     "type": "string"
                 },
-                "orderBy": {
+                "order_by": {
                     "type": "string"
                 }
             },
@@ -150,7 +145,7 @@
             "required": [
                 "name",
                 "criteria",
-                "orderBy"
+                "order_by"
             ]
         },
         "Element": {
@@ -171,10 +166,10 @@
         },
         "ExtractDB": {
             "properties": {
-                "name": {
+                "owner": {
                     "type": "string"
                 },
-                "owner": {
+                "name": {
                     "type": "string"
                 },
                 "variant": {
@@ -183,13 +178,13 @@
                 "session": {
                     "type": "integer"
                 },
-                "areaNumber": {
+                "area_number": {
                     "type": "integer"
                 },
-                "explicitClaim": {
+                "explicit_claim": {
                     "type": "boolean"
                 },
-                "extractNumber": {
+                "extract_number": {
                     "type": "integer"
                 },
                 "description": {
@@ -199,15 +194,12 @@
             "additionalProperties": false,
             "type": "object",
             "required": [
-                "name",
-                "owner"
+                "owner",
+                "name"
             ]
         },
-        "ForeignDB": {
+        "Foreign": {
             "properties": {
-                "name": {
-                    "type": "string"
-                },
                 "project": {
                     "type": "string"
                 },
@@ -216,12 +208,23 @@
                 },
                 "password": {
                     "type": "string"
+                },
+                "copy_dbs": {
+                    "items": {
+                        "$ref": "#/$defs/CopyDB"
+                    },
+                    "type": "array"
+                },
+                "include_dbs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 }
             },
             "additionalProperties": false,
             "type": "object",
             "required": [
-                "name",
                 "project"
             ]
         },
@@ -233,13 +236,13 @@
                 "description": {
                     "type": "string"
                 },
-                "currentDBs": {
+                "current_dbs": {
                     "items": {
                         "type": "string"
                     },
                     "type": "array"
                 },
-                "deferredDBs": {
+                "deferred_dbs": {
                     "items": {
                         "type": "string"
                     },
@@ -260,31 +263,31 @@
                 "type": {
                     "type": "string"
                 },
-                "referenceOnly": {
+                "ref_only": {
                     "type": "boolean"
                 },
-                "dbNumber": {
+                "db_number": {
                     "type": "integer"
                 },
-                "areaNumber": {
+                "area_number": {
                     "type": "integer"
                 },
-                "explicitClaim": {
+                "explicit_claim": {
                     "type": "boolean"
                 },
                 "protected": {
                     "type": "boolean"
                 },
-                "extractNumber": {
+                "extract_number": {
                     "type": "integer"
                 },
-                "fileNumber": {
+                "file_number": {
                     "type": "integer"
                 },
                 "description": {
                     "type": "string"
                 },
-                "createElement": {
+                "create_element": {
                     "$ref": "#/$defs/Element"
                 }
             },
@@ -321,7 +324,7 @@
                 "index": {
                     "type": "integer"
                 },
-                "faceName": {
+                "face_name": {
                     "type": "string"
                 },
                 "description": {
@@ -332,7 +335,7 @@
             "type": "object",
             "required": [
                 "index",
-                "faceName"
+                "face_name"
             ]
         },
         "Team": {
@@ -376,6 +379,37 @@
             "required": [
                 "name",
                 "password"
+            ]
+        },
+        "WorkingExtractDB": {
+            "properties": {
+                "owner": {
+                    "type": "string"
+                },
+                "users": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "variant": {
+                    "type": "boolean"
+                },
+                "area_number": {
+                    "type": "integer"
+                },
+                "explicit_claim": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "owner",
+                "users"
             ]
         }
     }

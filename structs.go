@@ -1,123 +1,134 @@
 package main
 
 import (
-	"encoding/json"
 	"io"
+
+	"go.yaml.in/yaml/v2"
 )
 
 type Project struct {
-	LogFile        string         `json:"logFile"`
-	Users          []User         `json:"users"`
-	AuthUsers      []AuthUser     `json:"authUsers"`
-	Teams          []Team         `json:"teams"`
-	MasterDBs      []MasterDB     `json:"masterDbs"`
-	CopyDBs        []CopyDB       `json:"copyDbs"`
-	IncludeDBs     []ForeignDB    `json:"includeDbs"`
-	ExtractDBs     []ExtractDB    `json:"extractDbs"`
-	DynamicDBSets  []DynamicDBSet `json:"dynamicDbSets"`
-	DBSets         []StaticDBSet  `json:"dbSets"`
-	MDBs           []MDB          `json:"mdbs"`
-	TTFonts        []TTFont       `json:"ttFonts"`
-	AdditionalCmds []string       `json:"additionalCmds"`
+	LogFile           string             `yaml:"log_file"`
+	Users             []User             `yaml:"users"`
+	AuthUsers         []AuthUser         `yaml:"auth_users"`
+	Teams             []Team             `yaml:"teams"`
+	MasterDBs         []MasterDB         `yaml:"master_dbs"`
+	Foreigns          []Foreign          `yaml:"foreigns"`
+	ExtractDBs        []ExtractDB        `yaml:"extract_dbs"`
+	WorkingExtractDBs []WorkingExtractDB `yaml:"working_extract_dbs"`
+	DynamicDBSets     []DynamicDBSet     `yaml:"dynamic_dbsets"`
+	DBSets            []StaticDBSet      `yaml:"dbsets"`
+	MDBs              []MDB              `yaml:"mdbs"`
+	TTFonts           []TTFont           `yaml:"ttfonts"`
+	PostCommands      []string           `yaml:"post_commands"`
 }
 
 type User struct {
-	Name        string `json:"name"`
-	Password    string `json:"password"`
-	Description string `json:"description"`
-	Free        bool   `json:"free,omitempty"`
+	Name        string `yaml:"name"`
+	Password    string `yaml:"password"`
+	Description string `yaml:"description"`
+	Free        bool   `yaml:"free,omitempty"`
 }
 
 type AuthUser struct {
-	Name        string   `json:"name"`
-	DefaultUser string   `json:"defaultUser"`
-	Users       []string `json:"users,omitempty"`
+	Name        string   `yaml:"name"`
+	DefaultUser string   `yaml:"default_user"`
+	Users       []string `yaml:"users,omitempty"`
 }
 
 type Team struct {
-	Name        string   `json:"name"`
-	Members     []string `json:"members"`
-	Description string   `json:"description,omitempty"`
+	Name        string   `yaml:"name"`
+	Members     []string `yaml:"members"`
+	Description string   `yaml:"description,omitempty"`
 }
 
 type MasterDB struct {
-	Name          string  `json:"name"`
-	Type          string  `json:"type"`
-	ReferenceOnly bool    `json:"referenceOnly"`
-	DBNumber      uint32  `json:"dbNumber"`
-	AreaNumber    uint16  `json:"areaNumber,omitempty"`
-	ExplicitClaim bool    `json:"explicitClaim,omitempty"`
-	Protected     bool    `json:"protected,omitempty"`
-	ExtractNumber uint16  `json:"extractNumber,omitempty"`
-	FileNumber    uint16  `json:"fileNumber,omitempty"`
-	Description   string  `json:"description,omitempty"`
-	CreateElement Element `json:"createElement"`
+	Name          string  `yaml:"name"`
+	Type          string  `yaml:"type"`
+	RefOnly       bool    `yaml:"ref_only"`
+	DBNumber      uint32  `yaml:"db_number"`
+	AreaNumber    uint16  `yaml:"area_number,omitempty"`
+	ExplicitClaim bool    `yaml:"explicit_claim,omitempty"`
+	Protected     bool    `yaml:"protected,omitempty"`
+	ExtractNumber uint16  `yaml:"extract_number,omitempty"`
+	FileNumber    uint16  `yaml:"file_number,omitempty"`
+	Description   string  `yaml:"description,omitempty"`
+	CreateElement Element `yaml:"create_element"`
 }
 
 type Element struct {
-	Type string `json:"type"`
-	Name string `json:"name"`
+	Type string `yaml:"type"`
+	Name string `yaml:"name"`
+}
+
+type Foreign struct {
+	Project    string   `yaml:"project"`
+	Username   string   `yaml:"username,omitempty"`
+	Password   string   `yaml:"password,omitempty"`
+	CopyDBs    []CopyDB `yaml:"copy_dbs,omitempty"`
+	IncludeDBs []string `yaml:"include_dbs,omitempty"`
 }
 
 type CopyDB struct {
-	From       ForeignDB `json:"from"`
-	To         string    `json:"to"`
-	AreaNumber uint16    `json:"areaNumber,omitempty"`
-	FileNumber uint16    `json:"fileNumber,omitempty"`
-}
-
-type ForeignDB struct {
-	Name     string `json:"name"`
-	Project  string `json:"project"`
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
+	From       string `yaml:"from"`
+	To         string `yaml:"to,omitempty"`
+	AreaNumber uint16 `yaml:"area_number,omitempty"`
+	FileNumber uint16 `yaml:"file_number,omitempty"`
 }
 
 type ExtractDB struct {
-	Name          string `json:"name"`
-	Owner         string `json:"owner"`
-	Variant       bool   `json:"variant,omitempty"`
-	Session       uint32 `json:"session,omitempty"`
-	AreaNumber    uint16 `json:"areaNumber,omitempty"`
-	ExplicitClaim bool   `json:"explicitClaim,omitempty"`
-	ExtractNumber uint16 `json:"extractNumber,omitempty"`
-	Description   string `json:"description,omitempty"`
+	Owner         string `yaml:"owner"`
+	Name          string `yaml:"name"`
+	Variant       bool   `yaml:"variant,omitempty"`
+	Session       uint32 `yaml:"session,omitempty"`
+	AreaNumber    uint16 `yaml:"area_number,omitempty"`
+	ExplicitClaim bool   `yaml:"explicit_claim,omitempty"`
+	ExtractNumber uint16 `yaml:"extract_number,omitempty"`
+	Description   string `yaml:"description,omitempty"`
+}
+
+type WorkingExtractDB struct {
+	Owner         string   `yaml:"owner"`
+	Users         []string `yaml:"users"`
+	Variant       bool     `yaml:"variant,omitempty"`
+	AreaNumber    uint16   `yaml:"area_number,omitempty"`
+	ExplicitClaim bool     `yaml:"explicit_claim,omitempty"`
+	Description   string   `yaml:"description,omitempty"`
 }
 
 type DynamicDBSet struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"`
-	Criteria    string `json:"criteria"`
-	OrderBy     string `json:"orderBy"`
+	Name        string `yaml:"name"`
+	Description string `yaml:"description,omitempty"`
+	Criteria    string `yaml:"criteria"`
+	OrderBy     string `yaml:"order_by"`
 }
 
 type StaticDBSet struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description,omitempty"`
-	DBs         []string `json:"dbs"`
+	Name        string   `yaml:"name"`
+	Description string   `yaml:"description,omitempty"`
+	DBs         []string `yaml:"dbs"`
 }
 
 type MDB struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	CurrentDBs  []string `json:"currentDBs"`
-	DeferredDBs []string `json:"deferredDBs,omitempty"`
+	Name        string   `yaml:"name"`
+	Description string   `yaml:"description"`
+	CurrentDBs  []string `yaml:"current_dbs"`
+	DeferredDBs []string `yaml:"deferred_dbs,omitempty"`
 }
 
 type TTFont struct {
-	Index       uint8  `json:"index"`
-	FaceName    string `json:"faceName"`
-	Description string `json:"description,omitempty"`
+	Index       uint8  `yaml:"index"`
+	FaceName    string `yaml:"face_name"`
+	Description string `yaml:"description,omitempty"`
 }
 
 func LoadProject(i io.Reader) (*Project, error) {
-	j, err := io.ReadAll(i)
+	in, err := io.ReadAll(i)
 	if err != nil {
 		return nil, err
 	}
-	var b Project
-	if err := json.Unmarshal(j, &b); err != nil {
+	var out Project
+	if err := yaml.Unmarshal(in, &out); err != nil {
 		return nil, err
 	}
-	return &b, nil
+	return &out, nil
 }

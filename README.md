@@ -1,6 +1,6 @@
 # dbbuilder
 
-dbbuilder outputs a macro for Aveva Administration to set up project database using options in JSON format.
+dbbuilder outputs a macro for Aveva Administration to set up project database using options in YAML format.
 
 ## Installation
 
@@ -14,16 +14,16 @@ Otherwise you can download a binary from [Releases](https://github.com/k-awata/d
 
 ## Usage
 
-- Output a sample JSON
+- Output a sample YAML
 
 ```bash
-dbbuilder -s > sample.json
+dbbuilder -s > sample.yaml
 ```
 
 - Output a macro to run in E3D
 
 ```bash
-dbbuilder sample.json > export.mac
+dbbuilder sample.yaml > export.mac
 ```
 
 ## License

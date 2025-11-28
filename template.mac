@@ -7,11 +7,11 @@ create user '{{str .Name}}'/{{.Password}} {{if .Free}}free{{else}}general{{end}}
 {{- end}}
 
 {{- range .AuthUsers}}
-{{- $ntname := .Name | str}}
-create authuser '{{$ntname}}'
-{{if .DefaultUser}}useradd to '{{$ntname}}' default '{{str .DefaultUser}}'{{end}}
+{{- $auth := .Name | str}}
+create authuser '{{$auth}}'
+{{if .DefaultUser}}useradd to '{{$auth}}' default '{{str .DefaultUser}}'{{end}}
 {{- range .Users}}
-useradd to '{{$ntname}}' '{{str .}}'
+useradd to '{{$auth}}' '{{str .}}'
 {{- end}}
 {{- end}}
 
@@ -23,19 +23,28 @@ tadd '{{str .}}'
 {{- end}}
 
 {{- range .MasterDBs}}
-create db {{.Name}} {{.Type}}{{if .ReferenceOnly}} refonly{{end}}{{if .AreaNumber}} in area {{.AreaNumber}}{{end}}{{if .Protected}} protect{{end}} claim {{if .ExplicitClaim}}explicit{{else}}implicit{{end}}{{if .ExtractNumber}} extno {{.ExtractNumber}}{{end}}{{if .DBNumber}} dbno {{.DBNumber}}{{end}}{{if .FileNumber}} fino {{.FileNumber}}{{end}}{{if .Description}} description '{{str .Description}}'{{end}}
+create db {{.Name}} {{.Type}}{{if .RefOnly}} refonly{{end}}{{if .AreaNumber}} in area {{.AreaNumber}}{{end}}{{if .Protected}} protect{{end}} claim {{if .ExplicitClaim}}explicit{{else}}implicit{{end}}{{if .ExtractNumber}} extno {{.ExtractNumber}}{{end}}{{if .DBNumber}} dbno {{.DBNumber}}{{end}}{{if .FileNumber}} fino {{.FileNumber}}{{end}}{{if .Description}} description '{{str .Description}}'{{end}}
 {{- end}}
 
+{{- range .Foreigns}}
+{{- $foreign := .}}
 {{- range .CopyDBs}}
-copy db {{.From.Name}} from project {{.From.Project}} user '{{if .From.Username}}{{str .From.Username}}{{else}}SYSTEM{{end}}'/{{if .From.Password}}{{.From.Password}}{{else}}XXXXXX{{end}} to {{if .To}}{{.To}}{{else}}{{.From.Name}}{{end}}
+copy db {{.From}} from project {{$foreign.Project}} user '{{if $foreign.Username}}{{str $foreign.Username}}{{else}}SYSTEM{{end}}'/{{if $foreign.Password}}{{$foreign.Password}}{{else}}XXXXXX{{end}} to {{if .To}}{{.To}}{{else}}{{.From}}{{end}}{{if .AreaNumber}} to area {{.AreaNumber}}{{end}}{{if .FileNumber}} fino {{.FileNumber}}{{end}}
 {{- end}}
-
 {{- range .IncludeDBs}}
-include db {{.Name}} from project {{.Project}} user '{{if .Username}}{{str .Username}}{{else}}SYSTEM{{end}}'/{{if .Password}}{{.Password}}{{else}}XXXXXX{{end}}
+include db {{.}} from project {{$foreign.Project}} user '{{if $foreign.Username}}{{str $foreign.Username}}{{else}}SYSTEM{{end}}'/{{if $foreign.Password}}{{$foreign.Password}}{{else}}XXXXXX{{end}}
+{{- end}}
 {{- end}}
 
 {{- range .ExtractDBs}}
 create {{if .Variant}}variant{{else}}extract{{end}} {{.Name}} from {{.Owner}}{{if .Session}} as at session {{.Session}}{{end}}{{if .AreaNumber}} in area {{.AreaNumber}}{{end}} claim {{if .ExplicitClaim}}explicit{{else}}implicit{{end}}{{if .ExtractNumber}} extno {{.ExtractNumber}}{{end}}{{if .Description}} description '{{str .Description}}'{{end}}
+{{- end}}
+
+{{- range .WorkingExtractDBs}}
+{{- $db := .}}
+{{- range .Users}}
+create working {{if $db.Variant}}variant{{else}}extract{{end}} from {{$db.Owner}} for {{.}}{{if $db.AreaNumber}} in area {{$db.AreaNumber}}{{end}} claim {{if $db.ExplicitClaim}}explicit{{else}}implicit{{end}}{{if $db.Description}} description '{{str $db.Description}}'{{end}}
+{{- end}}
 {{- end}}
 
 OLD DBSTWL /*DS
@@ -77,7 +86,7 @@ TTFDES '{{if .Description}}{{str .Description}}{{else}}{{str .FaceName}}{{end}}'
 END
 {{- end}}
 
-{{- range .AdditionalCmds}}
+{{- range .PostCommands}}
 {{.}}
 {{- end}}
 
