@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/k-awata/dbbuilder/refs/heads/main/schema.json
+log_file: init_project.log
+users:
+  - name: USERA
+    password: A
+teams:
+  - name: PROJECT
+    members:
+      - SYSTEM
+      - USERA
+  - name: ISOADMIN
+    members:
+      - SYSTEM
+  - name: ADMIN
+    members:
+      - SYSTEM
+master_dbs:
+  - name: PROJECT/DICT
+    type: DICT
+    db_number: 1
+    create_element:
+      type: UWRL
+      name: /PROJECT-UWRL
+  - name: PROJECT/CONF
+    type: CONF
+    db_number: 2
+    create_element:
+      type: CFGSTW
+      name: /PROJECT-CFGSTW
+  - name: PROJECT/XPRD
+    type: XPRD
+    db_number: 3
+    create_element:
+      type: CMTWLD
+      name: /PROJECT-CMTWLD
+  - name: PROJECT/CATA
+    type: CATA
+    db_number: 4
+    create_element:
+      type: CATA
+      name: /PROJECT-CATA
+  - name: PROJECT/PROP
+    type: PROP
+    db_number: 5
+    create_element:
+      type: CMPW
+      name: /PROJECT-CMPW
+  - name: PROJECT/DESI
+    type: DESI
+    db_number: 6
+    create_element:
+      type: GRIDWL
+      name: /PROJECT-GRIDWL
+  - name: PROJECT/PADD
+    type: PADD
+    db_number: 7
+    create_element:
+      type: DEPT
+      name: /PROJECT-DEPT
+  - name: PROJECT/ISOD
+    type: ISOD
+    db_number: 8
+    create_element:
+      type: ISODEP
+      name: /PROJECT-ISODEP
+foreigns:
+  - project: ACP
+    copy_dbs:
+      - from: MASTER/DICT
+      - from: MASTER/MDSDICT
+      - from: MASTER/DICTSDNF
+      - from: MASTER/FLEX_EXPL_DICT
+      - from: MASTER/STL_PROFILE_CATA
+      - from: MASTER/STL_PROFILE_SPECS
+      - from: MASTER/SLHCATA
+      - from: MASTER/SLHDATA
+      - from: MASTER/PADD
+      - from: MDS/PROP
+        to: ADMIN/PROP
+  - project: APS
+    copy_dbs:
+      - from: ADMIN/PADD
+dynamic_dbsets:
+  - name: /ALL-MASTER
+    description: All Master Databases
+    criteria: NOT ATTRIB ISEXTR
+    order_by: DBNO
+mdbs:
+  - name: /ALL
+    description: All Databases
+    current_dbs:
+      - /ALL-MASTER
+ttfonts:
+  - index: 5
+    face_name: Microsoft Sans Serif
+  - index: 6
+    face_name: Lucida Sans Unicode
