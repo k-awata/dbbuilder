@@ -5,248 +5,163 @@
         "Project": {
             "properties": {
                 "log_file": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Path to the log file"
                 },
                 "users": {
                     "items": {
                         "$ref": "#/$defs/User"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Project users"
                 },
                 "auth_users": {
                     "items": {
                         "$ref": "#/$defs/AuthUser"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Authenticated users"
                 },
                 "teams": {
                     "items": {
                         "$ref": "#/$defs/Team"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Teams"
                 },
                 "master_dbs": {
                     "items": {
                         "$ref": "#/$defs/MasterDB"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Standard (master) databases"
                 },
                 "foreigns": {
                     "items": {
                         "$ref": "#/$defs/Foreign"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Foreign projects for copying or including their databases"
                 },
                 "extract_dbs": {
                     "items": {
                         "$ref": "#/$defs/ExtractDB"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Extract databases"
                 },
                 "working_extract_dbs": {
                     "items": {
                         "$ref": "#/$defs/WorkingExtractDB"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Working extract databases"
                 },
                 "dynamic_dbsets": {
                     "items": {
                         "$ref": "#/$defs/DynamicDBSet"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "DBSET with dynamic members"
                 },
                 "dbsets": {
                     "items": {
                         "$ref": "#/$defs/StaticDBSet"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "DBSET with static members"
                 },
                 "mdbs": {
                     "items": {
                         "$ref": "#/$defs/MDB"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "MDBs"
                 },
                 "ttfonts": {
                     "items": {
                         "$ref": "#/$defs/TTFont"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "TrueType fonts"
                 },
                 "post_commands": {
                     "items": {
                         "type": "string"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "PML commands to run at the end"
                 }
             },
             "additionalProperties": false,
             "type": "object"
         },
-        "AuthUser": {
+        "User": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "User name"
                 },
-                "default_user": {
-                    "type": "string"
-                },
-                "users": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "name"
-            ]
-        },
-        "CopyDB": {
-            "properties": {
-                "from": {
-                    "type": "string"
-                },
-                "to": {
-                    "type": "string"
-                },
-                "area_number": {
-                    "type": "integer"
-                },
-                "file_number": {
-                    "type": "integer"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "from"
-            ]
-        },
-        "DynamicDBSet": {
-            "properties": {
-                "name": {
-                    "type": "string"
+                "password": {
+                    "type": "string",
+                    "description": "Password"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Description"
                 },
-                "criteria": {
-                    "type": "string"
-                },
-                "order_by": {
-                    "type": "string"
+                "free": {
+                    "type": "boolean",
+                    "description": "Whether to grant FREE access to the user"
                 }
             },
             "additionalProperties": false,
             "type": "object",
             "required": [
                 "name",
-                "criteria",
-                "order_by"
+                "password"
             ]
         },
-        "Element": {
+        "AuthUser": {
             "properties": {
-                "type": {
-                    "type": "string"
-                },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Qualified name"
+                },
+                "default_user": {
+                    "type": "string",
+                    "description": "Default project user for the authenticated user login"
+                },
+                "users": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "Valid project users for the authenticated user login"
                 }
             },
             "additionalProperties": false,
             "type": "object",
             "required": [
-                "type",
                 "name"
             ]
         },
-        "ExtractDB": {
-            "properties": {
-                "owner": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "variant": {
-                    "type": "boolean"
-                },
-                "session": {
-                    "type": "integer"
-                },
-                "area_number": {
-                    "type": "integer"
-                },
-                "explicit_claim": {
-                    "type": "boolean"
-                },
-                "extract_number": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "owner",
-                "name"
-            ]
-        },
-        "Foreign": {
-            "properties": {
-                "project": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "copy_dbs": {
-                    "items": {
-                        "$ref": "#/$defs/CopyDB"
-                    },
-                    "type": "array"
-                },
-                "include_dbs": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "project"
-            ]
-        },
-        "MDB": {
+        "Team": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Team name"
+                },
+                "members": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "User names of team members"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "current_dbs": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "deferred_dbs": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
+                    "type": "string",
+                    "description": "Description"
                 }
             },
             "additionalProperties": false,
@@ -258,37 +173,48 @@
         "MasterDB": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Database name"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Database type"
                 },
                 "ref_only": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether the database is reference-only"
                 },
                 "db_number": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Database number"
                 },
                 "area_number": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Area number to store the database"
                 },
                 "explicit_claim": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether to set the database to explicit claim mode"
                 },
                 "protected": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether to protect the database from copying"
                 },
                 "extract_number": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Extract number"
                 },
                 "file_number": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Database file number"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Description"
                 },
                 "create_element": {
-                    "$ref": "#/$defs/Element"
+                    "$ref": "#/$defs/Element",
+                    "description": "Initial top-level element below the WORLD"
                 }
             },
             "additionalProperties": false,
@@ -298,19 +224,249 @@
                 "type"
             ]
         },
+        "Element": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Element type"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Element name"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "type",
+                "name"
+            ]
+        },
+        "Foreign": {
+            "properties": {
+                "project": {
+                    "type": "string",
+                    "description": "Project code"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User name to access the foreign project",
+                    "default": "SYSTEM"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password for the user",
+                    "default": "XXXXXX"
+                },
+                "copy_dbs": {
+                    "items": {
+                        "$ref": "#/$defs/CopyDB"
+                    },
+                    "type": "array",
+                    "description": "Databases to copy to this project"
+                },
+                "include_dbs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "Databases to include in this project as foreign"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "project"
+            ]
+        },
+        "CopyDB": {
+            "properties": {
+                "from": {
+                    "type": "string",
+                    "description": "Source database name"
+                },
+                "to": {
+                    "type": "string",
+                    "description": "New database name"
+                },
+                "area_number": {
+                    "type": "integer",
+                    "description": "Area number to store the database"
+                },
+                "file_number": {
+                    "type": "integer",
+                    "description": "Database file number"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "from"
+            ]
+        },
+        "ExtractDB": {
+            "properties": {
+                "owner": {
+                    "type": "string",
+                    "description": "Owner database extracted from"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Database name"
+                },
+                "variant": {
+                    "type": "boolean",
+                    "description": "Whether the extract is variant"
+                },
+                "session": {
+                    "type": "integer",
+                    "description": "Parent session number to link with the extract"
+                },
+                "area_number": {
+                    "type": "integer",
+                    "description": "Area number to store the database"
+                },
+                "explicit_claim": {
+                    "type": "boolean",
+                    "description": "Whether to set the database to explicit claim mode"
+                },
+                "extract_number": {
+                    "type": "integer",
+                    "description": "Extract number"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "owner",
+                "name"
+            ]
+        },
+        "WorkingExtractDB": {
+            "properties": {
+                "owner": {
+                    "type": "string",
+                    "description": "Owner database extracted from"
+                },
+                "users": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "User names to create the working extracts for"
+                },
+                "variant": {
+                    "type": "boolean",
+                    "description": "Whether the extracts are variant"
+                },
+                "area_number": {
+                    "type": "integer",
+                    "description": "Area number to store the databases"
+                },
+                "explicit_claim": {
+                    "type": "boolean",
+                    "description": "Whether to set the databases to explicit claim mode"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "owner",
+                "users"
+            ]
+        },
+        "DynamicDBSet": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "DBSET name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description"
+                },
+                "criteria": {
+                    "type": "string",
+                    "description": "Selection expression for databases in the DBSET"
+                },
+                "order_by": {
+                    "type": "string",
+                    "description": "Sort selection by",
+                    "enum": [
+                        "DBNO",
+                        "STYP",
+                        "NAME"
+                    ],
+                    "enumDescriptions": [
+                        "Database number",
+                        "Database type",
+                        "Database name"
+                    ]
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "name",
+                "criteria",
+                "order_by"
+            ]
+        },
         "StaticDBSet": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "DBSET name"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Description"
                 },
                 "dbs": {
                     "items": {
                         "type": "string"
                     },
-                    "type": "array"
+                    "type": "array",
+                    "description": "Databases in the DBSET"
+                }
+            },
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+                "name"
+            ]
+        },
+        "MDB": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "MDB name"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description"
+                },
+                "current_dbs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "Current databases in the MDB"
+                },
+                "deferred_dbs": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "description": "Deferred databases in the MDB"
                 }
             },
             "additionalProperties": false,
@@ -322,13 +478,16 @@
         "TTFont": {
             "properties": {
                 "index": {
-                    "type": "integer"
+                    "type": "integer",
+                    "description": "Font index number"
                 },
                 "face_name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Font face name"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Font description"
                 }
             },
             "additionalProperties": false,
@@ -336,80 +495,6 @@
             "required": [
                 "index",
                 "face_name"
-            ]
-        },
-        "Team": {
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "members": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "name"
-            ]
-        },
-        "User": {
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "free": {
-                    "type": "boolean"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "name",
-                "password"
-            ]
-        },
-        "WorkingExtractDB": {
-            "properties": {
-                "owner": {
-                    "type": "string"
-                },
-                "users": {
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "variant": {
-                    "type": "boolean"
-                },
-                "area_number": {
-                    "type": "integer"
-                },
-                "explicit_claim": {
-                    "type": "boolean"
-                },
-                "description": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false,
-            "type": "object",
-            "required": [
-                "owner",
-                "users"
             ]
         }
     }
