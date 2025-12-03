@@ -10,7 +10,7 @@ import (
 
 const (
 	CliName = "dbbuilder"
-	Version = "0.1.0"
+	Version = "0.1.1"
 )
 
 //go:embed sample.yaml
