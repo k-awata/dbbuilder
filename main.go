@@ -79,11 +79,11 @@ func main() {
 		defer in.Close()
 	}
 
+	// Load YAML and output macro
 	pj, err := LoadProject(in)
 	chkErr(err)
 	mac, err := MakeMac(pj)
 	chkErr(err)
-
 	fmt.Fprint(out, mac)
 }
 
