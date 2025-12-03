@@ -55,7 +55,7 @@ func main() {
 
 	// Output sample YAML
 	if *sflg {
-		fmt.Fprintln(out, sample)
+		fmt.Fprint(out, sample)
 		return
 	}
 
