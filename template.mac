@@ -23,7 +23,7 @@ tadd '{{str .}}'
 {{- end}}
 
 {{- range .MasterDBs}}
-create db {{.Name}} {{.Type}}{{if .RefOnly}} refonly{{end}}{{if .AreaNumber}} in area {{.AreaNumber}}{{end}}{{if .Protected}} protect{{end}} claim {{if .ExplicitClaim}}explicit{{else}}implicit{{end}}{{if .ExtractNumber}} extno {{.ExtractNumber}}{{end}}{{if .DBNumber}} dbno {{.DBNumber}}{{end}}{{if .FileNumber}} fino {{.FileNumber}}{{end}}{{if .Description}} description '{{str .Description}}'{{end}}{{if .CreateElement}} with {{.CreateElement.Type}} {{.CreateElement.Name}}{{end}}
+create db {{.Name}} {{.Type}}{{if .RefOnly}} refonly{{end}}{{if .AreaNumber}} in area {{.AreaNumber}}{{end}}{{if .Protected}} protect{{end}} claim {{if .ExplicitClaim}}explicit{{else}}implicit{{end}}{{if .ExtractNumber}} extno {{.ExtractNumber}}{{end}}{{if .DBNumber}} dbno {{.DBNumber}}{{end}}{{if .FileNumber}} fino {{.FileNumber}}{{end}}{{if .CreateElement.Type}} with {{.CreateElement.Type}} {{.CreateElement.Name}}{{end}}{{if .Description}} description '{{str .Description}}'{{end}}
 {{- end}}
 
 {{- range .Foreigns}}
