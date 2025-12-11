@@ -8,10 +8,16 @@ teams:
     members:
       - SYSTEM
       - USERA
-  - name: ISOADMIN
+  - name: CATADMIN
     members:
       - SYSTEM
-  - name: ADMIN
+  - name: DESADMIN
+    members:
+      - SYSTEM
+  - name: DRAWADMIN
+    members:
+      - SYSTEM
+  - name: ISOADMIN
     members:
       - SYSTEM
 master_dbs:
@@ -68,18 +74,17 @@ foreigns:
     copy_dbs:
       - from: MASTER/DICT
       - from: MASTER/MDSDICT
-      - from: MASTER/DICTSDNF
       - from: MASTER/FLEX_EXPL_DICT
+      - from: MASTER/PADD
       - from: MASTER/STL_PROFILE_CATA
       - from: MASTER/STL_PROFILE_SPECS
+      - from: MASTER/STL_PROP
       - from: MASTER/SLHCATA
       - from: MASTER/SLHDATA
-      - from: MASTER/PADD
-      - from: MDS/PROP
-        to: ADMIN/PROP
   - project: APS
     copy_dbs:
       - from: ADMIN/PADD
+        to: DRAWADMIN/PADD
 dynamic_dbsets:
   - name: /ALL-MASTER
     description: All Master Databases
